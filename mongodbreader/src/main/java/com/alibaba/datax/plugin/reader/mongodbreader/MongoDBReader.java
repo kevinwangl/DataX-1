@@ -220,21 +220,21 @@ public class MongoDBReader extends Reader {
     /**
      *修复当mongodb数据是嵌套结构时将数据转换为json字符串
      * @param column 源数据表的列元数据
-     * @param tempCol 源数据列的值
+     * @param col_value 源数据列的值
      * @return
      */
-    private static String fixedNestedDocument(JSONObject column, Object tempCol) {
+    private static String fixedNestedDocument(JSONObject column, Object col_value) {
         //如果数据是个嵌套级对象直接转为json格式的string
 //        System.out.println("[INFO] ------------------------------------------------------------------------ fix nestedDocument");
 //        String column_name = column.getString(KeyConstant.COLUMN_NAME);
 //        System.out.println("[INFO] ------------------------------------------------------------------------current column "+column_name);
         String column_value = "";
-        if(tempCol!=null){
+        if(col_value!=null){
 //            System.out.println("[INFO] ------------------------------------------------------------------------current column value class "+tempCol.getClass());
-            if(tempCol instanceof Document){
-                column_value = ((Document) tempCol).toJson();
-            }else if(tempCol instanceof ArrayList){
-                ArrayList<Document> array = (ArrayList<Document>) tempCol;
+            if(col_value instanceof Document){
+                column_value = ((Document) col_value).toJson();
+            }else if(col_value instanceof ArrayList){
+                ArrayList<Document> array = (ArrayList<Document>) col_value;
                 JSONArray jsonArray = new JSONArray();
                 for(int i=0;i<array.size();i++){
                     Document element = array.get(i);
@@ -243,7 +243,7 @@ public class MongoDBReader extends Reader {
                 }
                 column_value = jsonArray.toJSONString();
             }else{
-                column_value = tempCol.toString();
+                column_value = col_value.toString();
             }
 //            System.out.println("[INFO] ------------------------------------------------------------------------current data is "+column_value);
         }
